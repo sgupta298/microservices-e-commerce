@@ -1,6 +1,6 @@
 package com.sanjay.ecommerce.mapper;
 
-import com.sanjay.ecommerce.category.Category;
+import com.sanjay.ecommerce.entity.Category;
 import com.sanjay.ecommerce.dto.ProductPurchaseResponse;
 import com.sanjay.ecommerce.dto.ProductRequest;
 import com.sanjay.ecommerce.dto.ProductResponse;
