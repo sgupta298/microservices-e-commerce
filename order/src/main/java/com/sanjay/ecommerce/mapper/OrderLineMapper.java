@@ -2,6 +2,7 @@ package com.sanjay.ecommerce.mapper;
 
 
 import com.sanjay.ecommerce.dto.OrderLineRequest;
+import com.sanjay.ecommerce.dto.OrderLineResponse;
 import com.sanjay.ecommerce.entity.Order;
 import com.sanjay.ecommerce.entity.OrderLine;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,9 @@ public class OrderLineMapper {
                 )
                 .productId(orderLineRequest.productId())
                 .build();
+    }
+
+    public OrderLineResponse toOrderLineResponse(OrderLine orderLine) {
+        return new OrderLineResponse(orderLine.getId(), orderLine.getQuantity());
     }
 }
