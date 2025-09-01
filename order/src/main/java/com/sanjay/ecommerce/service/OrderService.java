@@ -1,6 +1,7 @@
 package com.sanjay.ecommerce.service;
 
 
+import com.sanjay.ecommerce.clients.PaymentClient;
 import com.sanjay.ecommerce.clients.ProductClient;
 import com.sanjay.ecommerce.dto.*;
 import com.sanjay.ecommerce.exception.BusinessException;
@@ -24,6 +25,7 @@ public class OrderService {
     private final OrderMapper orderMapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
+    private final PaymentClient paymentClient;
 
     public Integer createOrder(OrderRequest orderRequest) {
         //check the customer --> OpenFeign
@@ -44,7 +46,15 @@ public class OrderService {
                     )
             );
         }
-        // todo start payment process
+
+        var paymentRequest = new PaymentRequest(
+                orderRequest.amount(),
+                orderRequest.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         //send the order confirmation --> notification microservice (kafka)
         orderProducer.sendOrderConfirmation(

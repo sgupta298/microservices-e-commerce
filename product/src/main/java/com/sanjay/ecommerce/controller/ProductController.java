@@ -36,7 +36,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> findAll(@PathVariable Integer productId) {
+    public ResponseEntity<List<ProductResponse>> findAll() {
         return ResponseEntity.ok(productService.findAll());
     }
 }
