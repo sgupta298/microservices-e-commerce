@@ -1,0 +1,645 @@
+{
+	"info": {
+		"_postman_id": "fe69ccb2-64b7-41d6-b10b-bc28101e86f8",
+		"name": "Ecommerce APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48087618"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create a product",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Earbuds\",\n    \"description\": \"Wireless earbuds\",\n    \"availableQuantity\": 39.0,\n    \"price\": 124.99,\n    \"categoryId\": 201\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						},
+						"description": "Creates a new transaction. You can transfer funds between accounts by providing two account IDs in the `fromAccountId` and `toAccountId` fields.\n\n### Response\n\nA successful request will contain a single transaction object with the newly created transaction `id`\n\nIf there are not enough funds in the originator's account to complete the transaction, the request will return a `400 Insufficient Funds` error.\n\n### Important!\n\nTransactions cannot be edited once created, so use this endpoint with caution."
+					},
+					"response": []
+				},
+				{
+					"name": "Purchase product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>Product ID</th>\r",
+									"        <th>Name</th>\r",
+									"        <th>Description</th>\r",
+									"        <th>Price</th>\r",
+									"        <th>Quantity</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr>\r",
+									"            <td>{{productId}}</td>\r",
+									"            <td>{{name}}</td>\r",
+									"            <td>{{description}}</td>\r",
+									"            <td>{{price}}</td>\r",
+									"            <td>{{quantity}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()}\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"productId\": \"1202\",\r\n        \"quantity\": 1.0\r\n    },\r\n    {\r\n        \"productId\": \"1201\",\r\n        \"quantity\": 2.0\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/products/purchase",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"purchase"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/products/1202",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"1202"
+							]
+						},
+						"description": "This endpoint retrieves details of a specific transaction by providing the transaction ID as a path parameter.\n\nIf you are looking to retrieve more than one transaction, check out the **List Transactions** request.\n\n### Response\n\nUpon a successful request, the response will contain a single transaction object matching the search criteria.\n\nIf no transaction with the given ID is found, the request will return a `Not Found` error.\n\n### Visualization\n\nAfter sending the request, be sure to check out the visualization on this request by clicking over to the `Visualize` tab in the response pane."
+					},
+					"response": []
+				},
+				{
+					"name": "All products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Name</th>\r",
+									"        <th>Description</th>\r",
+									"        <th>Available Quantity</th>\r",
+									"        <th>Price</th>\r",
+									"        <th>Category ID</th>\r",
+									"        <th>Category Name</th>\r",
+									"        <th>Category Description</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{name}}</td>\r",
+									"            <td>{{description}}</td>\r",
+									"            <td>{{availableQuantity}}</td>\r",
+									"            <td>{{price}}</td>\r",
+									"            <td>{{categoryId}}</td>\r",
+									"            <td>{{categoryName}}</td>\r",
+									"            <td>{{categoryDescription}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return {response: pm.response.json()};\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/products",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"products"
+							]
+						},
+						"description": "This endpoint retrieves transactions for a given account, optionally filtering for transactions created on or after a date (`createdAt`), the account receiving the transaction (`toAccountId`) or the account initiating the transaction (`fromAccountId`).\n\n### Response\n\nUpon a successful request, the response will contain an array of transaction objects matching the search criteria.\n\nIf no matching transactions are found, the transactions object will contain an empty array.\n\n### Visualization\n\nAfter sending the request, be sure to check out the visualization on this request by clicking over to the `Visualize` tab in the response pane."
+					},
+					"response": []
+				}
+			],
+			"description": "<img src=\"https://content.pstmn.io/2f912e6a-6eb0-410f-b74e-788c5bac6735/Q29pbi5wbmc=\" alt=\"Cosmic%20Coin\" width=\"112\" height=\"130\">\n\nA _**transaction**_ records money moving in or out of an account. Transactions at the Intergalactic Bank follow a blockchain-like approach. Once created, they cannot be updated or deleted.\n\nUse the **transaction** endpoints contained in this folder to...\n\n- <u>List transactions </u> \\- get all transactions from an account, with options to filter by date, or the account they were delivered to.\n- <u>Get a single transaction</u> - If you are looking to retrieve information about a specific transaction, provide a transaction `id` and receive information about the transaction.\n- <u>Create a new transaction</u> - create a new transfer or deposit transaction for a given account.\n    \n\nTransactions do not contain any information about the account balance. To inquire about account balances and other account-related details, please refer to the requests in the **Accounts** folder."
+		},
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "Create New Customer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Sanjay\",\n    \"lastName\": \"Gupta\",\n    \"email\": \"sanjay@testmail.com\",\n    \"address\": {\n        \"street\": \"1\",\n        \"houseNumber\": \"1\",\n        \"zipCode\": \"1\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers"
+							]
+						},
+						"description": "Creates a new account at the Intergalactic Bank.\n\n### Request Body Properties\n\n| Property Name | Property Type | **Description** | **Required?** |\n| --- | --- | --- | --- |\n| owner | String | Full name of the person opening this account | Yes |\n| balance | Number | The starting balance of the account | Yes |\n| currency | String - Possible values: `COSMIC_COINS`, `GALAXY_GOLD`, `MOON_BUCKS` | The currency this account will be using for transactions. This cannot be changed once established. | Yes |\n\n### Response\n\nA successful request will contain a single `account` object with the newly created account `id`"
+					},
+					"response": []
+				},
+				{
+					"name": "Update customer",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"68b69eed684e587543b876b9\",\r\n    \"firstName\": \"Sanjay\",\r\n    \"lastName\": \"Kumar\",\r\n    \"email\": \"sanjay2@testmail.com\",\r\n    \"address\": {\r\n        \"street\": \"2\",\r\n        \"houseNumber\": \"2\",\r\n        \"zipCode\": \"2\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>First Name</th>\r",
+									"        <th>Last Name</th>\r",
+									"        <th>Email</th>\r",
+									"        <th>Street</th>\r",
+									"        <th>House Number</th>\r",
+									"        <th>Zip Code</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr id=row_{{@key}}>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{firstName}}</td>\r",
+									"            <td>{{lastName}}</td>\r",
+									"            <td>{{email}}</td>\r",
+									"            <td>{{address.street}}</td>\r",
+									"            <td>{{address.houseNumber}}</td>\r",
+									"            <td>{{address.zipCode}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return { response: pm.response.json() };\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers"
+							]
+						},
+						"description": "List all accounts that exist at the the Intergalactic Bank. Optionally, filter by `owner` (using a full name), or filter for accounts created on or after a `createdAt` date (using `YYYY-MM-DD` format).\n\n### Response\n\nUpon a successful request, the response will return an `accounts` object that contains an array of nested accounts matching the search criteria.\n\nIf no accounts are found to match the search criteria, the `accounts` object will contain an empty array.\n\n### Visualization\n\nAfter sending the request, be sure to check out the visualization on this request by clicking over to the `Visualize` tab in the response pane."
+					},
+					"response": []
+				},
+				{
+					"name": "Exists by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers/exists/68b69eed684e587543b876b9",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"exists",
+								"68b69eed684e587543b876b9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Customer by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers/68b69eed684e587543b876b9",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"68b69eed684e587543b876b9"
+							]
+						},
+						"description": "Get information about an account by passing the account `id` as a path parameter.\n\n### Response\n\nUpon a successful request, the response will contain an `account` object matching the search criteria.\n\nIf no account with that ID is found, the request will return a `Not Found` error.\n\n### Visualization\n\nAfter sending the request, be sure to check out the visualization on this request by clicking over to the `Visualize` tab in the response pane."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/customers/68b69eed684e587543b876b9",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"68b69eed684e587543b876b9"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "<img src=\"https://content.pstmn.io/c1995eee-896d-4c9f-891a-a206bc16cc0b/c2F2ZS1tb25leS5wbmc=\" width=\"249\" height=\"158\">\n\nAn Account at the Intergalactic Bank allows you to store funds.\n\nUse the _**account**_ endpoints contained in this folder to...\n\n- <u>List accounts </u> \\- get all accounts that meet your search criteria.\n- <u>Get a single account</u> - If you are looking to retrieve information about a specific account, provide an account `id` and receive information about the account.\n- <u>Create a new account</u> - Create a new account\n    \n\nAccount endpoints do not return information about transactions. To retrieve transaction information, check out the requests in the **Transactions** folder."
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "All orders",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Reference</th>\r",
+									"        <th>Amount</th>\r",
+									"        <th>Payment Method</th>\r",
+									"        <th>Customer ID</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{reference}}</td>\r",
+									"            <td>{{amount}}</td>\r",
+									"            <td>{{paymentMethod}}</td>\r",
+									"            <td>{{customerId}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return { response: pm.response.json() };\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/orders/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"reference\": \"abc-def-gha\",\r\n    \"amount\": 184.97,\r\n    \"paymentMethod\": \"MASTER_CARD\",\r\n    \"customerId\": \"68b6a302684e587543b876ba\",\r\n    \"products\": [\r\n        {\r\n            \"productId\": \"1202\",\r\n            \"quantity\": 1.0\r\n        },\r\n        {\r\n            \"productId\": \"1201\",\r\n            \"quantity\": 2.0\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/orders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order line by order id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `\r",
+									"<style type=\"text/css\">\r",
+									"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+									"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+									"    .tftable tr {background-color:#ffffff;}\r",
+									"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+									"    .tftable tr:hover {background-color:#e0ffff;}\r",
+									"</style>\r",
+									"\r",
+									"<table class=\"tftable\" border=\"1\">\r",
+									"    <tr>\r",
+									"        <th>ID</th>\r",
+									"        <th>Quantity</th>\r",
+									"    </tr>\r",
+									"    \r",
+									"    {{#each response}}\r",
+									"        <tr>\r",
+									"            <td>{{id}}</td>\r",
+									"            <td>{{quantity}}</td>\r",
+									"        </tr>\r",
+									"    {{/each}}\r",
+									"</table>\r",
+									"`;\r",
+									"\r",
+									"function constructVisualizerPayload() {\r",
+									"    return { response: pm.response.json() };\r",
+									"}\r",
+									"\r",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/order-lines/order/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order-lines",
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8222",
+			"type": "string"
+		}
+	]
+}
