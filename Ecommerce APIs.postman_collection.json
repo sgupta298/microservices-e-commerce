@@ -615,6 +615,36 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "accessTokenUrl",
+				"value": "http://localhost:9098/realms/ecommerce/protocol/openid-connect/token",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "qyR3xDPkwZ3p8Lp9QMvI13dCKV6D1hkg",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "ecommerce-api",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "client_credentials",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -638,8 +668,7 @@
 	"variable": [
 		{
 			"key": "baseUrl",
-			"value": "http://localhost:8222",
-			"type": "string"
+			"value": "http://localhost:8222"
 		}
 	]
 }
